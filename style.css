@@ -1,0 +1,55 @@
+:root {
+  --black: #3a3a3a;
+  --white-1: #fafafa;
+  --white-2: #c0c0c0;
+}
+
+body {
+  background-color: var(--white-2);
+  font-family: 'Ubuntu Mono', monospace;
+}
+
+.container {
+  width: 50%;
+  margin: 32px auto;
+}
+
+.calc {
+  width: 280px;
+  margin: 0 auto;
+  background-color: var(--black);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 48px 32px;
+  border-radius: 10px;
+}
+
+.calc__display {
+  background-color: var(--white-1);
+  color: var(--black);
+  font-size: 32px;
+  padding: 12px 24px;
+  text-align: right;
+  margin-block-end: 24px;
+}
+
+.row {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+
+.calc__btn {
+  background-color: var(--white-1);
+  height: 48px;
+  width: 48px;
+  font-size: 24px;
+  border: none;
+  border-radius: 50%;
+  color: var(--black);
+  font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
