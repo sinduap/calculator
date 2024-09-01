@@ -2,16 +2,18 @@
 const calculator = document.querySelector('.calc');
 const display = document.querySelector('.calc__display');
 
-let number1, number2, operand;
+let number1 = '0';
+let number2 = '0';
+let operand;
 
 function processNumber(input) {
   if (!operand) {
     if (!number1 && input === '.') number1 = '0';
-    number1 = (number1 || '').concat(input);
+    number1 = String(+number1 || '').concat(input);
     printDisplay(number1);
   } else if (operand) {
     if (!number2 && input === '.') number2 = '0';
-    number2 = (number2 || '').concat(input);
+    number2 = String(+number2 || '').concat(input);
     printDisplay(number2);
   }
 }
@@ -46,7 +48,10 @@ function handleClick(e) {
   if (!e.target instanceof HTMLButtonElement) return;
   const symbol = e.target.textContent;
   if (!Number.isNaN(Number(symbol)) || symbol === '.') processNumber(symbol);
-  if ('x/+-'.includes(symbol)) operand = symbol;
+  if ('x/+-'.includes(symbol)) {
+    if (operand) processCalculate(number1, number2, operand);
+    operand = symbol;
+  }
   if (symbol === '=') processCalculate(number1, number2, operand);
   if (symbol === 'AC') {
     number1 = number2 = operand = '';
@@ -63,6 +68,15 @@ function handleClick(e) {
       printDisplay(number1);
     } else {
       number2 = number2?.slice(0, -1) || '0';
+      printDisplay(number2);
+    }
+  }
+  if (symbol === '+/-') {
+    if (!operand) {
+      number1 = number1.startsWith('-') ? number1.slice(1) : `-${number1}`;
+      printDisplay(number1);
+    } else {
+      number2 = number2.startsWith('-') ? number2.slice(1) : `-${number2}`;
       printDisplay(number2);
     }
   }
