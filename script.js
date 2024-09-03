@@ -6,7 +6,7 @@ calculator.addEventListener('click', handleClick);
 
 let number1 = null;
 let number2 = null;
-let operand = null;
+let operator = null;
 let result = null;
 
 function handleClick(e) {
@@ -18,13 +18,13 @@ function handleClick(e) {
   if (symbol === 'CE') handleCE();
   if (symbol === 'DEL') handleDEL();
   if (symbol === '+/-') handleSign();
-  if (symbol === '=' && operand) calculate();
+  if (symbol === '=' && operator) calculate();
   if (symbol === '.') handleDecimal();
 }
 
 function handleNumber(input) {
   if (result) result = null;
-  if (!operand) {
+  if (!operator) {
     if (!number1) {
       number1 = Number(input);
     } else {
@@ -51,7 +51,7 @@ function handleNumber(input) {
 
 function handleSign() {
   if (result) return;
-  if (!operand) {
+  if (!operator) {
     number1 = -number1;
     display(number1);
   } else {
@@ -62,61 +62,61 @@ function handleSign() {
 
 function handleOperator(symbol) {
   if (
-    (symbol === operand && !number2) ||
-    (!operand && !number1 && !number2 && !result)
+    (symbol === operator && !number2) ||
+    (!operator && !number1 && !number2 && !result)
   ) {
     return;
   }
 
-  if (number1 && number2 && operand) {
+  if (number1 && number2 && operator) {
     calculate();
-    operand = symbol;
+    operator = symbol;
   }
   if (number1 && number2 && result) {
     number1 = result;
-    operand = symbol;
+    operator = symbol;
     result = null;
   }
-  if (!number2 && !operand) {
-    operand = symbol;
+  if (!number2 && !operator) {
+    operator = symbol;
   }
   if (result) {
     number1 = result;
-    operand = symbol;
+    operator = symbol;
     result = null;
   }
-  operand = symbol;
+  operator = symbol;
 }
 
 function calculate() {
   if (number1 === null || number2 === null) return;
 
-  if (operand === '+') {
+  if (operator === '+') {
     result = (number1.toFixed(2) * 100 + number2.toFixed(2) * 100) / 100;
-  } else if (operand === '-') {
+  } else if (operator === '-') {
     result = (number1.toFixed(2) * 100 - number2.toFixed(2) * 100) / 100;
-  } else if (operand === '/') {
+  } else if (operator === '/') {
     result = number1 / number2;
     result = (result.toFixed(2) * 100) / 100;
-  } else if (operand === 'x') {
+  } else if (operator === 'x') {
     result = number1 * number2;
     result = (result.toFixed(2) * 100) / 100;
   }
   number1 = number2 = null;
-  operand = null;
+  operator = null;
   display(result);
 }
 
 function handleAC() {
   number1 = null;
   number2 = null;
-  operand = null;
+  operator = null;
   result = null;
   display(0);
 }
 
 function handleCE() {
-  if (!operand) number1 = null;
+  if (!operator) number1 = null;
   else number2 = null;
   display(0);
 }
@@ -124,7 +124,7 @@ function handleCE() {
 function handleDEL() {
   let strNumber;
   if (result) return;
-  if (!operand) {
+  if (!operator) {
     strNumber = String(number1);
     number1 = Number(strNumber?.slice(0, -1)) ?? 0;
     display(number1);
@@ -136,7 +136,7 @@ function handleDEL() {
 }
 
 function handleDecimal() {
-  if (!operand) {
+  if (!operator) {
     if (Number.isInteger(+number1) || number1 === null) {
       number1 = number1 ? number1 + '.' : '0.';
     }
