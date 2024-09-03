@@ -2,10 +2,25 @@
 const calculator = document.querySelector('.calc');
 const calculatorDisplay = document.querySelector('.calc__display');
 
+calculator.addEventListener('click', handleClick);
+
 let number1 = null;
 let number2 = null;
 let operand = null;
 let result = null;
+
+function handleClick(e) {
+  if (!e.target instanceof HTMLButtonElement) return;
+  const symbol = e.target.textContent;
+  if (!Number.isNaN(Number(symbol))) handleNumber(symbol);
+  if ('x/+-'.includes(symbol)) handleOperator(symbol);
+  if (symbol === 'AC') handleAC();
+  if (symbol === 'CE') handleCE();
+  if (symbol === 'DEL') handleDEL();
+  if (symbol === '+/-') handleSign();
+  if (symbol === '=' && operand) calculate();
+  if (symbol === '.') handleDecimal();
+}
 
 function handleNumber(input) {
   if (result) result = null;
@@ -148,19 +163,3 @@ function display(content) {
   if (Number.isNaN(content)) content = 0;
   calculatorDisplay.textContent = content;
 }
-
-function handleClick(e) {
-  if (!e.target instanceof HTMLButtonElement) return;
-  const symbol = e.target.textContent;
-  if (!Number.isNaN(Number(symbol))) handleNumber(symbol);
-  if ('x/+-'.includes(symbol)) handleOperator(symbol);
-  if (symbol === 'AC') handleAC();
-  if (symbol === 'CE') handleCE();
-  if (symbol === 'DEL') handleDEL();
-  if (symbol === '+/-') handleSign();
-  if (symbol === '=' && operand) calculate();
-  if (symbol === '.') handleDecimal();
-  console.log({ number1, number2, operand, result });
-}
-
-calculator.addEventListener('click', handleClick);
