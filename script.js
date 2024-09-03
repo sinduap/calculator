@@ -137,24 +137,12 @@ function handleDEL() {
 
 function handleDecimal() {
   if (!operand) {
-    number1 = null;
-    if (Number.isInteger(number1) || number1 === null) {
-      if (number1) {
-        number1 = number1 + '.';
-      } else {
-        number1 = '0.';
-        display(0);
-      }
+    if (Number.isInteger(+number1) || number1 === null) {
+      number1 = number1 ? number1 + '.' : '0.';
     }
   } else {
-    if (Number.isInteger(number2) || number2 === null) {
-      number2 = null;
-      if (number2) {
-        number2 = number2 + '.';
-      } else {
-        number2 = '0.';
-        display(0);
-      }
+    if (Number.isInteger(+number2) || number2 === null) {
+      number2 = number2 ? number2 + '.' : '0.';
     }
   }
 }
