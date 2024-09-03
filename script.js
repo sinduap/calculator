@@ -11,7 +11,7 @@ let result = null;
 
 function handleClick(e) {
   if (!e.target instanceof HTMLButtonElement) return;
-  const symbol = e.target.textContent;
+  const { symbol } = e.target.dataset;
   if (!Number.isNaN(Number(symbol))) handleNumber(symbol);
   if ('x/+-'.includes(symbol)) handleOperator(symbol);
   if (symbol === 'AC') handleAC();
@@ -138,11 +138,21 @@ function handleDEL() {
 function handleDecimal() {
   if (!operator) {
     if (Number.isInteger(+number1) || number1 === null) {
-      number1 = number1 ? number1 + '.' : '0.';
+      if (number1) {
+        number1 = number1 + '.';
+      } else {
+        number1 = '0.';
+      }
+      display(number1);
     }
   } else {
     if (Number.isInteger(+number2) || number2 === null) {
-      number2 = number2 ? number2 + '.' : '0.';
+      if (number2) {
+        number2 = number2 + '.';
+      } else {
+        number2 = '0.';
+      }
+      display(number2);
     }
   }
 }
