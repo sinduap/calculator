@@ -2,6 +2,7 @@
   --black: #3a3a3a;
   --white-1: #fafafa;
   --white-2: #c0c0c0;
+  --accent: #ed802e;
 }
 
 body {
@@ -26,12 +27,21 @@ body {
 }
 
 .calc__display {
-  background-color: var(--white-1);
-  color: var(--black);
+  background-color: var(--black);
+  color: var(--white-1);
   font-size: 32px;
   padding: 12px 24px;
   text-align: right;
   margin-block-end: 24px;
+  white-space: nowrap;
+  width: 75%;
+  align-self: center;
+  overflow: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }
 
 .row {
@@ -41,15 +51,34 @@ body {
 }
 
 .calc__btn {
-  background-color: var(--white-1);
+  background-color: var(--black);
   height: 48px;
   width: 48px;
   font-size: 24px;
   border: none;
   border-radius: 50%;
-  color: var(--black);
+  color: var(--white-1);
   font-family: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: 0.1s all ease;
+}
+
+.calc__btn:hover {
+  filter: brightness(1.2);
+}
+
+.calc__btn:active {
+  filter: brightness(1.1);
+}
+
+.calc__btn--color {
+  color: var(--accent);
+}
+
+.calc__btn--bg-color {
+  background-color: var(--accent);
 }
