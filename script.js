@@ -1,13 +1,18 @@
+// Constants
+const TWO_FRACTIONAL_DIGITS_FACTOR = 100;
+
 // DOM Bindings
 const calculator = document.querySelector('.calc');
 const calculatorDisplay = document.querySelector('.calc__display');
 
+// Listeners
 calculator.addEventListener('click', handleClick);
 
-let number1 = null;
-let number2 = null;
-let operator = null;
-let result = null;
+// States
+let number1 = null,
+  number2 = null,
+  operator = null,
+  result = null;
 
 function handleClick(e) {
   if (!e.target instanceof HTMLButtonElement) return;
@@ -18,8 +23,8 @@ function handleClick(e) {
   if (symbol === 'CE') handleCE();
   if (symbol === 'DEL') handleDEL();
   if (symbol === '+/-') handleSign();
+  if (symbol === '.') handleDecimalSeparator();
   if (symbol === '=' && operator) calculate();
-  if (symbol === '.') handleDecimal();
 }
 
 function handleNumber(input) {
@@ -85,33 +90,35 @@ function handleOperator(symbol) {
     operator = symbol;
     result = null;
   }
-  operator = symbol;
 }
 
 function calculate() {
   if (number1 === null || number2 === null) return;
-
   if (operator === '+') {
-    result = (number1.toFixed(2) * 100 + number2.toFixed(2) * 100) / 100;
+    result =
+      (number1.toFixed(2) * TWO_FRACTIONAL_DIGITS_FACTOR +
+        number2.toFixed(2) * TWO_FRACTIONAL_DIGITS_FACTOR) /
+      TWO_FRACTIONAL_DIGITS_FACTOR;
   } else if (operator === '-') {
-    result = (number1.toFixed(2) * 100 - number2.toFixed(2) * 100) / 100;
+    result =
+      (number1.toFixed(2) * TWO_FRACTIONAL_DIGITS_FACTOR -
+        number2.toFixed(2) * TWO_FRACTIONAL_DIGITS_FACTOR) /
+      TWO_FRACTIONAL_DIGITS_FACTOR;
   } else if (operator === '/') {
-    result = number1 / number2;
-    result = (result.toFixed(2) * 100) / 100;
+    result =
+      ((number1 / number2).toFixed(2) * TWO_FRACTIONAL_DIGITS_FACTOR) /
+      TWO_FRACTIONAL_DIGITS_FACTOR;
   } else if (operator === 'x') {
-    result = number1 * number2;
-    result = (result.toFixed(2) * 100) / 100;
+    result =
+      ((number1 * number2).toFixed(2) * TWO_FRACTIONAL_DIGITS_FACTOR) /
+      TWO_FRACTIONAL_DIGITS_FACTOR;
   }
-  number1 = number2 = null;
-  operator = null;
+  number1 = number2 = operator = null;
   display(result);
 }
 
 function handleAC() {
-  number1 = null;
-  number2 = null;
-  operator = null;
-  result = null;
+  number1 = number2 = operator = result = null;
   display(0);
 }
 
@@ -135,23 +142,15 @@ function handleDEL() {
   }
 }
 
-function handleDecimal() {
+function handleDecimalSeparator() {
   if (!operator) {
-    if (Number.isInteger(+number1) || number1 === null) {
-      if (number1) {
-        number1 = number1 + '.';
-      } else {
-        number1 = '0.';
-      }
+    if (Number.isInteger(Number(number1)) || number1 === null) {
+      number1 = number1 ? number1 + '.' : '0.';
       display(number1);
     }
   } else {
-    if (Number.isInteger(+number2) || number2 === null) {
-      if (number2) {
-        number2 = number2 + '.';
-      } else {
-        number2 = '0.';
-      }
+    if (Number.isInteger(Number(number2)) || number2 === null) {
+      number2 = number2 ? number2 + '.' : '0.';
       display(number2);
     }
   }
@@ -159,5 +158,6 @@ function handleDecimal() {
 
 function display(content) {
   if (Number.isNaN(content)) content = 0;
+  if (!Number.isFinite(Number(content))) content = "Can't divide 0";
   calculatorDisplay.textContent = content;
 }
