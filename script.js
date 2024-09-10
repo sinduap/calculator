@@ -75,25 +75,23 @@ function handleOperator(symbol) {
 
   if (number1 && number2 && operator) {
     calculate();
-    operator = symbol;
   }
   if (number1 && number2 && result) {
     number1 = result;
-    operator = symbol;
     result = null;
-  }
-  if (!number2 && !operator) {
-    operator = symbol;
   }
   if (result) {
     number1 = result;
     operator = symbol;
     result = null;
   }
+  operator = symbol;
 }
 
 function calculate() {
   if (number1 === null || number2 === null) return;
+  number1 = Number(number1);
+  number2 = Number(number2);
   if (operator === '+') {
     result =
       (number1.toFixed(2) * TWO_FRACTIONAL_DIGITS_FACTOR +
